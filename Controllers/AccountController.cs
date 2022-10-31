@@ -26,10 +26,12 @@ namespace AuthApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.Mail == model.Email && u.Password == model.Password);
+                User user = await _context.Users
+                     .Include(u => u.Role)
+                     .FirstOrDefaultAsync(u => u.Mail == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(model.Email); // аутентификация
+                    await Authenticate(user); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -51,11 +53,16 @@ namespace AuthApp.Controllers
                 User user = await _context.Users.FirstOrDefaultAsync(u => u.Mail == model.Email);
                 if (user == null)
                 {
-                    // добавляем пользователя в бд
-                    _context.Users.Add(new User { Mail = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, TotalAmount = 0 });
+                    user = new User { Mail = model.Email, Password = model.Password };
+                    Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
+                    if (userRole != null)
+                        user.Role = userRole;
+
+                    _context.Users.Add(user);
+
                     await _context.SaveChangesAsync();
 
-                    await Authenticate(model.Email); // аутентификация
+                    await Authenticate(user); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -65,13 +72,14 @@ namespace AuthApp.Controllers
             return View(model);
         }
 
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(User user)
         {
             // создаем один claim
             var claims = new List<Claim>
-{
-new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
-};
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Mail),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name)
+            };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             // установка аутентификационных куки

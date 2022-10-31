@@ -53,5 +53,39 @@ namespace PTLab2.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove(int? id)
+        {
+            if (id != null)
+            {
+                Product? product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product != null)
+                {
+                    _context.Products.Remove(product);
+                    await _context.SaveChangesAsync();
+                    return Redirect("~/Home/");
+                }
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id != null)
+            {
+                Product? product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+                if (product != null) return View(product);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product product)
+        {
+            product.NewPrice = product.Price;
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return RedirectToActionPermanent("CreateShop", "Shop");
+        }
     }
 }
