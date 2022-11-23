@@ -5,13 +5,14 @@ using PTLab2.Views.ViewModels; // пространство имен моделе
 using PTLab2.Models; // пространство имен UserContext и класса User
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PTLab2.Controllers;
 
 namespace AuthApp.Controllers
 {
     public class AccountController : Controller
     {
         private ShopContext _context;
-        public AccountController(ShopContext context)
+        public AccountController(ILogger<AccountController> logger, ShopContext context)
         {
             _context = context;
         }
