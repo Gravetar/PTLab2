@@ -9,14 +9,14 @@ namespace PTLab2.Controllers
     {
         ShopContext _context;
 
-        public ShopController(ILogger<HomeController> logger, ShopContext context)
+        public ShopController(ILogger<ShopController> logger, ShopContext context)
         {
             _context = context;
         }
 
-        public IActionResult CreateShop()
+        public async Task<IActionResult> CreateShop()
         {
-            User? user = _context.Users.FirstOrDefault(u => u.Mail == User.Identity.Name);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Mail == User.Identity.Name);
             ViewData["TotalAmountUser"] = user?.TotalAmount.ToString();
 
             List<Product> model = new List<Product>(_context.Products);
