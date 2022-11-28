@@ -30,27 +30,10 @@ namespace PTLab2.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> Registration(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+
         public IActionResult Authorization()
         {
             return View();
-        }
-        public IActionResult CreateProduct()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateProduct(Product product)
-        {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

@@ -5,13 +5,14 @@ using PTLab2.Views.ViewModels; // пространство имен моделе
 using PTLab2.Models; // пространство имен UserContext и класса User
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using PTLab2.Controllers;
 
 namespace AuthApp.Controllers
 {
     public class AccountController : Controller
     {
         private ShopContext _context;
-        public AccountController(ShopContext context)
+        public AccountController(ILogger<AccountController> logger, ShopContext context)
         {
             _context = context;
         }
@@ -26,12 +27,12 @@ namespace AuthApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users
+                User? user = await _context.Users
                      .Include(u => u.Role)
                      .FirstOrDefaultAsync(u => u.Mail == model.Email && u.Password == model.Password);
                 if (user != null)
                 {
-                    await Authenticate(user); // аутентификация
+                    Authenticate(user); // аутентификация
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -60,7 +61,7 @@ namespace AuthApp.Controllers
 
                     _context.Users.Add(user);
 
-                    await _context.SaveChangesAsync();
+                    _context.SaveChangesAsync();
 
                     await Authenticate(user); // аутентификация
 
