@@ -18,6 +18,8 @@ using Castle.Components.DictionaryAdapter.Xml;
 using System.Security.Principal;
 using System.Collections;
 using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ShopTest
 {
@@ -43,6 +45,11 @@ namespace ShopTest
                 .Setup(s => s.GetService(typeof(IAuthenticationService)))
                 .Returns(authenticationServiceMock.Object);
 
+            var viewmock = new Mock<ITempDataDictionaryFactory>();
+            serviceProviderMock
+                .Setup(s => s.GetService(typeof(ITempDataDictionaryFactory)))
+                .Returns(viewmock.Object);
+
             var urlHelperFactory = new Mock<IUrlHelperFactory>();
             serviceProviderMock
                 .Setup(s => s.GetService(typeof(IUrlHelperFactory)))
@@ -63,6 +70,20 @@ namespace ShopTest
                 }
             };
             return controller;
+        }
+
+        [Fact]
+        public async Task CreateShopTest()
+        {
+            var db = _serviceProvider.GetRequiredService<ShopContext>();
+
+            var controller = SetupController(db);
+
+            var result = await controller.CreateShop();
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.NotNull(viewResult);
         }
 
         [Fact]
