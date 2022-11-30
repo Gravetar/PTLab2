@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ShopTest\**" />
+    <Content Remove="ShopTest\**" />
+    <EmbeddedResource Remove="ShopTest\**" />
+    <None Remove="ShopTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
   </ItemGroup>
