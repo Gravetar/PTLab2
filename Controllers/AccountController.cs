@@ -38,7 +38,7 @@ namespace AuthApp.Controllers
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return View(model);
+            return BadRequest();
         }
         [HttpGet]
         public IActionResult Register()
@@ -49,6 +49,7 @@ namespace AuthApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModel model)
         {
+            ModelState.Clear();
             if (ModelState.IsValid)
             {
                 User user = await _context.Users.FirstOrDefaultAsync(u => u.Mail == model.Email);
@@ -70,7 +71,7 @@ namespace AuthApp.Controllers
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
-            return View(model);
+            return BadRequest();
         }
 
         private async Task Authenticate(User user)

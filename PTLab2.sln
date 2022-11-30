@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTLab2", "PTLab2.csproj", "{2937AB05-F004-4445-982C-6151E711B98F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopTest", "..\ShopTest\ShopTest\ShopTest.csproj", "{98D77AAF-8CEC-40DC-A426-7B898758E457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopTest", "ShopTest\ShopTest\ShopTest.csproj", "{98D77AAF-8CEC-40DC-A426-7B898758E457}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2937AB05-F004-4445-982C-6151E711B98F} = {2937AB05-F004-4445-982C-6151E711B98F}
 	EndProjectSection

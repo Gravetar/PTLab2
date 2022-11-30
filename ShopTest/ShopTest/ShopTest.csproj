@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PTLab2\PTLab2.csproj" />
+    <ProjectReference Include="..\..\PTLab2.csproj" />
   </ItemGroup>
 
 </Project>

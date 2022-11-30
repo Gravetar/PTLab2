@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
 // получаем строку подключения из файла конфигурации
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
